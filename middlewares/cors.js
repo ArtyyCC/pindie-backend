@@ -7,12 +7,12 @@ const allowedCors = [
     `localhost:${PORT}`
 ];
 
-export const cors = (req, res, next) => {
-    const {origin} = req.headers;
+export const cors = (request, response, next) => {
+    const {origin} = request.headers;
 
     if (allowedCors.includes(origin)) {
         // res.header('Access-Control-Allow-Origin', '*'); To ignore the clean slate
-        res.header('Access-Control-Allow-Origin', origin);
+        response.header('Access-Control-Allow-Origin', origin);
     }
 
     next();

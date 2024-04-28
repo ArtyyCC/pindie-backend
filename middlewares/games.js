@@ -1,10 +1,34 @@
 import {games} from "../models/game.js";
 
 
-const findAllGames = async (req, res, next) => {
-    req.gamesArray = await games.find({}).populate("categories").populate("users");
-    console.log(req.gamesArray)
+const findAllGames = async (request, response, next) => {
+    request.gamesArray = await games.find({}).populate("categories").populate("users");
     next();
-}
+};
 
-export default findAllGames;
+const createGame = async (request, response, next) => {
+    try {
+        console.log(request.body);
+        request.game = await games.create(request.body);
+        next();
+    } catch (error) {
+        response.status(400).send("Error creating game");
+    }
+    next();
+};
+
+const findGameById = async (request, response, next) => {
+    try {
+        request.game = await games.findById(request.params.id);
+        next();
+    } catch (error) {
+        response.status(404).send({ message: "Game not found" });
+    }
+};
+
+
+export {
+    findAllGames,
+    createGame,
+    findGameById
+};

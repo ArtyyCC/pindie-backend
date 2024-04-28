@@ -1,10 +1,33 @@
 import {categoryModel} from "../models/category.js";
-import {userModel} from "../models/user.js";
 
 
-const findAllCategories = async (req, res, next) => {
-    req.categoriesArray = await categoryModel.find({});
+const findAllCategories = async (request, response, next) => {
+    request.categoriesArray = await categoryModel.find({});
     next();
 }
 
-export default findAllCategories;
+const createCategory = async (request, response, next) => {
+    console.log("POST /categories");
+    try {
+        console.log(request.body);
+        request.category = await categoryModel.create(request.body);
+        next();
+    } catch (error) {
+        response.status(400).send("Error creating category");
+    }
+};
+
+const findCategoryById = async (request, response, next) => {
+    try {
+        request.category = await categoryModel.findById(request.params.id);
+        next();
+    } catch (error) {
+        response.status(404).send({ message: "Category not found" });
+    }
+};
+
+export {
+    findAllCategories,
+    createCategory,
+    findCategoryById
+}

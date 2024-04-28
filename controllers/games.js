@@ -1,7 +1,15 @@
-const sendAllGames = (req, res, next) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(req.gamesArray));
+const sendAllGames = (request, response, next) => {
+    response.setHeader('Content-Type', 'application/json');
+    response.end(JSON.stringify(request.gamesArray));
     next();
-}
+};
 
-export default sendAllGames;
+const sendGameCreated = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.game));
+};
+
+export {
+    sendAllGames,
+    sendGameCreated
+}

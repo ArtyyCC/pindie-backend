@@ -3,4 +3,12 @@ const sendAllUsers = (req, res) => {
     res.end(JSON.stringify(req.usersArray));
 };
 
-export default sendAllUsers;
+const sendUserCreated = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.user));
+};
+
+export {
+    sendAllUsers,
+    sendUserCreated
+}

@@ -1,11 +1,11 @@
 import express from 'express';
-
-const mainRoute = express.Router();
 import {promises as fs} from 'fs';
 
-mainRoute.get("/", (req, res) => {
+const mainRoute = express.Router();
+
+mainRoute.get("/", (request, response) => {
     fs.readFile("./public/index.html", "utf-8").then((data) => {
-        res.header("Content-Type", "text/html").send(data);
+        response.header("Content-Type", "text/html").send(data);
     });
 });
 
