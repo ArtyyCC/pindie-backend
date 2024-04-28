@@ -1,6 +1,8 @@
-import users from "../models/user.js"
+import {userModel} from "../models/user.js";
+
+
 const findAllUsers = async (req, res, next) => {
-    req.usersArray = await users.find({});
+    req.usersArray = await userModel.find({});
     next();
 }
 
