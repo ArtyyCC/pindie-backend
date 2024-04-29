@@ -8,8 +8,14 @@ const sendCategoryCreated = (request, response) => {
     response.end(JSON.stringify(request.category));
 };
 
+const sendCategoryDelete = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.category));
+};
+
 
 export {
     sendAllCategories,
-    sendCategoryCreated
+    sendCategoryCreated,
+    sendCategoryDelete
 }

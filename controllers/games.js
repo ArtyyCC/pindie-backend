@@ -9,7 +9,14 @@ const sendGameCreated = (request, response) => {
     response.end(JSON.stringify(request.game));
 };
 
+const sendGameDelete = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.game));
+};
+
+
 export {
     sendAllGames,
-    sendGameCreated
+    sendGameCreated,
+    sendGameDelete
 }

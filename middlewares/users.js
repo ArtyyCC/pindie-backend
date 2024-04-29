@@ -26,8 +26,19 @@ const findUserById = async (request, response, next) => {
     }
 };
 
+const deleteUser = async (request, response, next) => {
+    try {
+        request.user = await userModel.findByIdAndDelete(request.params.id);
+        next();
+    } catch (error) {
+        response.status(400).send("Error deleting category");
+    }
+    next();
+};
+
 export {
     findAllUsers,
     createUser,
-    findUserById
+    findUserById,
+    deleteUser
 }

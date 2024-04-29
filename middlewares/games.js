@@ -2,7 +2,12 @@ import {games} from "../models/game.js";
 
 
 const findAllGames = async (request, response, next) => {
-    request.gamesArray = await games.find({}).populate("categories").populate("users");
+    request.gamesArray = await games.find({})
+        .populate("categories")
+        .populate({
+            path: "users",
+            select: "-password",
+        });
     next();
 };
 
@@ -26,9 +31,20 @@ const findGameById = async (request, response, next) => {
     }
 };
 
+const deleteGame = async (request, response, next) => {
+    try {
+        request.game = await games.findByIdAndDelete(request.params.id);
+        next();
+    } catch (error) {
+        response.status(400).send("Error deleting game");
+    }
+    next();
+};
+
 
 export {
     findAllGames,
     createGame,
-    findGameById
+    findGameById,
+    deleteGame
 };

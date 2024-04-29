@@ -11,7 +11,7 @@ export const cors = (request, response, next) => {
     const {origin} = request.headers;
 
     if (allowedCors.includes(origin)) {
-        // res.header('Access-Control-Allow-Origin', '*'); To ignore the clean slate
+        // response.header('Access-Control-Allow-Origin', '*'); To ignore the clean slate
         response.header('Access-Control-Allow-Origin', origin);
     }
 

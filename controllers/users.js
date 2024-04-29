@@ -8,7 +8,14 @@ const sendUserCreated = (request, response) => {
     response.end(JSON.stringify(request.user));
 };
 
+const sendUserDelete = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.user));
+};
+
+
 export {
     sendAllUsers,
-    sendUserCreated
+    sendUserCreated,
+    sendUserDelete
 }

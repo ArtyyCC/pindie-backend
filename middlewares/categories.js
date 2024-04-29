@@ -1,4 +1,5 @@
 import {categoryModel} from "../models/category.js";
+import {games} from "../models/game.js";
 
 
 const findAllCategories = async (request, response, next) => {
@@ -17,6 +18,16 @@ const createCategory = async (request, response, next) => {
     }
 };
 
+const deleteCategory = async (request, response, next) => {
+    try {
+        request.category = await categoryModel.findByIdAndDelete(request.params.id);
+        next();
+    } catch (error) {
+        response.status(400).send("Error deleting category");
+    }
+    next();
+};
+
 const findCategoryById = async (request, response, next) => {
     try {
         request.category = await categoryModel.findById(request.params.id);
@@ -29,5 +40,6 @@ const findCategoryById = async (request, response, next) => {
 export {
     findAllCategories,
     createCategory,
-    findCategoryById
+    findCategoryById,
+    deleteCategory
 }
