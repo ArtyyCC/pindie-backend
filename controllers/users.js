@@ -8,14 +8,26 @@ const sendUserCreated = (request, response) => {
     response.end(JSON.stringify(request.user));
 };
 
-const sendUserDelete = (request, response) => {
+const sendUserDeleted = (request, response) => {
     response.setHeader("Content-Type", "application/json");
     response.end(JSON.stringify(request.user));
+};
+
+const sendUserById = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(request.user));
+};
+
+const sendUserUpdated = (request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify({message: "User Update"}));
 };
 
 
 export {
     sendAllUsers,
     sendUserCreated,
-    sendUserDelete
+    sendUserDeleted,
+    sendUserById,
+    sendUserUpdated
 }

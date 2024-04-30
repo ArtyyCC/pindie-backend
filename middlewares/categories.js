@@ -33,13 +33,36 @@ const findCategoryById = async (request, response, next) => {
         request.category = await categoryModel.findById(request.params.id);
         next();
     } catch (error) {
-        response.status(404).send({ message: "Category not found" });
+        response.status(404).send({message: "Category not found"});
     }
 };
+
+const updateCategory = async (request, response, next) => {
+    try {
+        request.category = await categoryModel.findByIdAndUpdate(request.params.id, request.body);
+        next();
+    } catch (error) {
+        response.status(400).send({message: "Error update category"});
+    }
+};
+
+const checkIsCategoryExists = async (request, response, next) => {
+    const isInArray = request.categoriesArray.find((category) => {
+        return request.body.name === category.name;
+    });
+    if (isInArray) {
+        response.status(400).send({message: "A category with this name already exists"});
+    } else {
+        next();
+    }
+};
+
 
 export {
     findAllCategories,
     createCategory,
     findCategoryById,
-    deleteCategory
+    deleteCategory,
+    updateCategory,
+    checkIsCategoryExists
 }

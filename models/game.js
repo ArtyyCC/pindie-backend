@@ -5,22 +5,37 @@ import {categoryModel} from "./category.js";
 const gameSchema = new mongoose.Schema({
     title: {
         type: String,
+        trim: true,
+        maxLength: 255,
+        minLength: 1,
         required: true,
     },
     description: {
         type: String,
+        trim: true,
+        maxLength: 255,
+        minLength: 1,
         required: true,
     },
     developer: {
         type: String,
+        trim: true,
+        maxLength: 255,
+        minLength: 1,
         required: true
     },
     image: {
         type: String,
+        trim: true,
+        maxLength: 255,
+        minLength: 1,
         required: true
     },
     link: {
         type: String,
+        trim: true,
+        maxLength: 255,
+        minLength: 1,
         required: true
     },
     users: [{

@@ -1,12 +1,34 @@
 import express from 'express';
-import {createGame, deleteGame, findAllGames, findGameById} from "../middlewares/games.js";
-import {sendAllGames, sendGameCreated, sendGameDelete} from "../controllers/games.js";
-import {games} from "../models/game.js";
+import {
+    checkEmptyFields, checkIfCategoriesAvaliable, checkIfUsersAreSafe, checkIsGameExists,
+    createGame,
+    deleteGame,
+    findAllGames,
+    findGameById,
+    updateGame
+} from "../middlewares/games.js";
+import {sendAllGames, sendGameById, sendGameCreated, sendGameDeleted, sendGameUpdated} from "../controllers/games.js";
 
 const gamesRouter = express.Router();
 
 gamesRouter.get('/games', findAllGames, sendAllGames)
-gamesRouter.post('/games', findAllGames, createGame, sendGameCreated)
-gamesRouter.delete("/games/:id", findGameById, deleteGame, sendGameDelete)
+gamesRouter.get('/games/:id', findGameById, sendGameById)
+gamesRouter.post('/games', findAllGames,
+    checkIsGameExists,
+    checkIfCategoriesAvaliable,
+    checkEmptyFields,
+    createGame,
+    sendGameCreated
+)
+gamesRouter.delete("/games/:id", findGameById, deleteGame, sendGameDeleted)
+gamesRouter.put(
+    "/games/:id",
+    findGameById,
+    checkIfUsersAreSafe,
+    checkIfCategoriesAvaliable,
+    checkEmptyFields,
+    updateGame,
+    sendGameUpdated
+)
 
 export default gamesRouter;

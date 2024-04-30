@@ -1,12 +1,27 @@
 import express from 'express';
-import {sendCategoryCreated, sendAllCategories, sendCategoryDelete} from "../controllers/categories.js";
-import {createCategory, deleteCategory, findAllCategories, findCategoryById} from "../middlewares/categories.js";
+import {
+    sendCategoryCreated,
+    sendAllCategories,
+    sendCategoryDeleted,
+    sendCategoryById, sendCategoryUpdated
+} from "../controllers/categories.js";
+import {
+    checkIsCategoryExists,
+    createCategory,
+    deleteCategory,
+    findAllCategories,
+    findCategoryById,
+    updateCategory
+} from "../middlewares/categories.js";
+import {checkEmptyName} from "../middlewares/users.js";
 
 const categoriesRouter = express.Router();
 
 categoriesRouter.get("/categories", findAllCategories, sendAllCategories);
-categoriesRouter.post("/categories", findAllCategories, createCategory, sendCategoryCreated);
-categoriesRouter.delete("/categories/:id", findCategoryById ,deleteCategory, sendCategoryDelete);
+categoriesRouter.get("/categories/:id", findCategoryById, sendCategoryById);
+categoriesRouter.post("/categories", findAllCategories, checkIsCategoryExists, checkEmptyName, createCategory, sendCategoryCreated);
+categoriesRouter.delete("/categories/:id", findCategoryById, deleteCategory, sendCategoryDeleted);
+categoriesRouter.put("/categories/:id", findCategoryById, checkEmptyName, updateCategory, sendCategoryUpdated)
 
 export default categoriesRouter;
 
