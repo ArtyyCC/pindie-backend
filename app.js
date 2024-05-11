@@ -3,12 +3,11 @@ import {PORT} from './config.js';
 import {cors} from './middlewares/cors.js';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import mainRoute from './routes/main.js';
 import bodyParser from "body-parser";
 import connectToDatabase from "./database/connect.js";
-import usersRouter from "./routes/users.js";
-import categoriesRouter from "./routes/categories.js";
-import gamesRouter from "./routes/games.js";
+import {apiRouter} from "./routes/apiRouter.js";
+import cookieParser from 'cookie-parser';
+import {pageRouter} from "./routes/pageRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,12 +17,11 @@ connectToDatabase();
 
 app.use(
     cors,
+    cookieParser(),
     bodyParser.json(),
     express.static(path.join(__dirname, 'public')),
-    mainRoute,
-    categoriesRouter,
-    usersRouter,
-    gamesRouter
+    pageRouter,
+    apiRouter
 );
 
 

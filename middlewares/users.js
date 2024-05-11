@@ -1,15 +1,16 @@
-import {userModel} from "../models/user.js";
+import user from "../models/user.js";
+import bcrypt from 'bcryptjs';
+import {request} from "express";
 
 
 const findAllUsers = async (request, response, next) => {
-    request.usersArray = await userModel.find({});
+    request.usersArray = await user.find({}, { password: 0 });
     next();
 }
 
 const createUser = async (request, response, next) => {
     try {
-        console.log(request.body);
-        request.user = await userModel.create(request.body);
+        request.user = await user.create(request.body);
         next();
     } catch (error) {
         response.status(400).send("Error creating user");
@@ -18,7 +19,7 @@ const createUser = async (request, response, next) => {
 
 const findUserById = async (request, response, next) => {
     try {
-        request.user = await userModel.findById(request.params.id);
+        request.user = await user.findById(request.params.id, {password: 0});
         next();
     } catch (error) {
         response.status(404).send({message: "User not found"});
@@ -27,7 +28,7 @@ const findUserById = async (request, response, next) => {
 
 const deleteUser = async (request, response, next) => {
     try {
-        request.user = await userModel.findByIdAndDelete(request.params.id);
+        request.user = await user.findByIdAndDelete(request.params.id);
         next();
     } catch (error) {
         response.status(400).send("Error deleting category");
@@ -37,7 +38,7 @@ const deleteUser = async (request, response, next) => {
 
 const updateUser = async (request, response, next) => {
     try {
-        request.user = await userModel.findByIdAndUpdate(request.params.id, request.body);
+        request.user = await user.findByIdAndUpdate(request.params.id, request.body);
         next();
     } catch (error) {
         response.status(400).send({message: "Error update user"});
@@ -71,6 +72,16 @@ const checkIsUserExists = async (request, response, next) => {
     }
 };
 
+const conversionToHash = async  (require, response, next) => {
+    try {
+        const salt = await bcrypt.getSalt(10);
+        request.body.password = await bcrypt.hash(request.body.password, salt);
+        next();
+    } catch (error) {
+        response.status(500).send({message: "Password hashing execution error"})
+    }
+}
+
 export {
     findAllUsers,
     createUser,
@@ -79,5 +90,6 @@ export {
     updateUser,
     checkEmptyName,
     checkEmptyNameAndEmail,
-    checkIsUserExists
+    checkIsUserExists,
+    conversionToHash
 }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcryptjs';
 
-
-export const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         maxLength: 255,
@@ -15,6 +15,7 @@ export const userSchema = new mongoose.Schema({
         minLength: 5,
         trim: true,
         required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -25,4 +26,22 @@ export const userSchema = new mongoose.Schema({
     },
 });
 
-export const userModel = mongoose.model('user', userSchema)
+
+userSchema.statics.findUserByCredentials = function(email, password) {
+    return this.findOne({ email })
+        .then(user => {
+            if (!user) {
+                return Promise.reject(new Error("Incorrect email or password"));
+            }
+            return bcrypt.compare(password, user.password)
+                .then(matched => {
+                    if (!matched) {
+                        return Promise.reject(new Error("Incorrect email or password"));
+                    }
+                    return user;
+                });
+        });
+};
+
+
+export default mongoose.model('user', userSchema)

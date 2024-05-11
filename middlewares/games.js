@@ -1,19 +1,25 @@
-import {games} from "../models/game.js";
+import game from "../models/game.js";
 
 
 const findAllGames = async (request, response, next) => {
-    request.gamesArray = await games.find({})
+    if(request.query["categories.name"]) {
+        request.gamesArray = await game.findGameByCategory(request.query["categories.name"]);
+        next();
+        return;
+    }
+    request.gamesArray = await game
+        .find({})
         .populate("categories")
         .populate({
             path: "users",
-            select: "-password",
-        });
+            select: "-password"
+        })
     next();
 };
 
 const createGame = async (request, response, next) => {
     try {
-        request.game = await games.create(request.body);
+        request.game = await game.create(request.body);
         next();
     } catch (error) {
         response.status(400).send("Error creating game");
@@ -23,7 +29,7 @@ const createGame = async (request, response, next) => {
 
 const findGameById = async (request, response, next) => {
     try {
-        request.game = await games.findById(request.params.id);
+        request.game = await game.findById(request.params.id);
         next();
     } catch (error) {
         response.status(404).send({message: "Game not found"});
@@ -32,7 +38,7 @@ const findGameById = async (request, response, next) => {
 
 const deleteGame = async (request, response, next) => {
     try {
-        request.game = await games.findByIdAndDelete(request.params.id);
+        request.game = await game.findByIdAndDelete(request.params.id);
         next();
     } catch (error) {
         response.status(400).send("Error deleting game");
@@ -42,7 +48,7 @@ const deleteGame = async (request, response, next) => {
 
 const updateGame = async (request, response, next) => {
     try {
-        request.game = await games.findByIdAndUpdate(request.params.id, request.body);
+        request.game = await game.findByIdAndUpdate(request.params.id, request.body);
         next();
     } catch (error) {
         response.status(400).send({message: "Error update game"});
@@ -100,6 +106,14 @@ const checkIsGameExists = async (request, response, next) => {
     }
 };
 
+const checkIsVoteRequest = async (req, res, next) => {
+    // Если в запросе присылают только поле users
+    if (Object.keys(req.body).length === 1 && req.body.users) {
+        req.isVoteRequest = true;
+    }
+    next();
+};
+
 
 export {
     findAllGames,
@@ -110,5 +124,6 @@ export {
     checkEmptyFields,
     checkIfCategoriesAvaliable,
     checkIfUsersAreSafe,
-    checkIsGameExists
+    checkIsGameExists,
+    checkIsVoteRequest
 };

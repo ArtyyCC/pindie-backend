@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import {userModel} from "./user.js";
-import {categoryModel} from "./category.js";
+import user from "./user.js";
+import category from "./category.js";
 
 const gameSchema = new mongoose.Schema({
     title: {
@@ -40,12 +40,27 @@ const gameSchema = new mongoose.Schema({
     },
     users: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: userModel,
+        ref: user,
     }],
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: categoryModel,
+        ref: category,
     }]
 });
 
-export const games = mongoose.model('game', gameSchema)
+gameSchema.statics.findGameByCategory = function(category) {
+    return this.find({})
+        .populate({
+            path: "categories",
+            match: { name: category }
+        })
+        .populate({
+            path: "users",
+            select: "-password"
+        })
+        .then(games => {
+            return games.filter(game => game.categories.length > 0);
+        });
+};
+
+export default mongoose.model('game', gameSchema)

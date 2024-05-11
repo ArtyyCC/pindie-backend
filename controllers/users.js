@@ -1,3 +1,5 @@
+
+
 const sendAllUsers = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(req.usersArray));
@@ -24,10 +26,16 @@ const sendUserUpdated = (request, response) => {
 };
 
 
+const sendMe = (request, response) => {
+    response.setHeader("Content-type", "application/json");
+    response.end(JSON.stringify(request.user))
+}
+
 export {
     sendAllUsers,
     sendUserCreated,
     sendUserDeleted,
     sendUserById,
-    sendUserUpdated
+    sendUserUpdated,
+    sendMe
 }
