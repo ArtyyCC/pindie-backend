@@ -6,5 +6,5 @@ export const ALLOWED_CORS = [
     'https://practicum.yandex.ru',
     'https://students-projects.ru',
     `localhost:${PORT}`,
-    'http://localhost:8080',
+    'https://notartya.nomoredomainswork.ru',
 ];
