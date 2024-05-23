@@ -56,6 +56,10 @@ const updateGame = async (request, response, next) => {
 };
 
 const checkEmptyFields = async (request, response, next) => {
+    if(request.isVoteRequest) {
+        next();
+        return;
+    }
     if (
         !request.body.title ||
         !request.body.description ||
@@ -70,6 +74,10 @@ const checkEmptyFields = async (request, response, next) => {
 };
 
 const checkIfCategoriesAvaliable = async (request, response, next) => {
+    if(request.isVoteRequest) {
+        next();
+        return;
+    }
     if (!request.body.categories || request.body.categories.length === 0) {
         response.headers = {"Content-Type": "application/json"};
         response.status(400).send({message: "Pick at least one category"});
@@ -106,10 +114,9 @@ const checkIsGameExists = async (request, response, next) => {
     }
 };
 
-const checkIsVoteRequest = async (req, res, next) => {
-    // Если в запросе присылают только поле users
-    if (Object.keys(req.body).length === 1 && req.body.users) {
-        req.isVoteRequest = true;
+const checkIsVoteRequest = async (request, response, next) => {
+    if (Object.keys(request.body).length === 1 && request.body.users) {
+        request.isVoteRequest = true;
     }
     next();
 };
