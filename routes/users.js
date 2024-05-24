@@ -24,7 +24,7 @@ const usersRouter = express.Router();
 usersRouter.get("/me", checkAuth, sendMe)
 usersRouter.get("/users", findAllUsers, sendAllUsers);
 usersRouter.get("/users/:id", findUserById, sendUserById)
-usersRouter.post("/users", findAllUsers, checkIsUserExists, checkEmptyNameAndEmail,checkAuth, conversionToHash, createUser, sendUserCreated);
+usersRouter.post("/users", findAllUsers, checkIsUserExists, checkEmptyNameAndEmail, checkAuth, conversionToHash, createUser, sendUserCreated);
 usersRouter.delete("/users/:id", findUserById,checkAuth, deleteUser, sendUserDeleted)
 usersRouter.put("/users/:id", findUserById, checkEmptyNameAndEmail, checkAuth, updateUser, sendUserUpdated)
 

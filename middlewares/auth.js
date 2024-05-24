@@ -1,23 +1,23 @@
 import jwt from 'jsonwebtoken';
 
 
-const checkAuth = (req, res, next) => {
-    const { authorization } = req.headers;
+const checkAuth = (request, response, next) => {
+    const {authorization} = request.headers;
     if (!authorization || !authorization.startsWith("Bearer ")) {
-        return res.status(401).send({ message: "Необходима авторизация" });
+        return response.status(401).send({message: "authorisation required"});
     }
     const token = authorization.replace("Bearer ", "");
     try {
-        req.user = jwt.verify(token, "i-am-so-tired");
+        request.user = jwt.verify(token, 'i-am-so-tired');
     } catch (err) {
-        return res.status(401).send({ message: "Необходима авторизация" });
+        return response.status(401).send({message: "authorisation required"});
     }
     next();
 };
 
 const checkCookiesJWT = (request, response, next) => {
     if (!request.cookies.jwt) {
-        return response.redirect('/');
+        return response.redirect("/");
     }
     request.headers.authorization = `Bearer ${request.cookies.jwt}`;
     next();

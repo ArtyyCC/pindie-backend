@@ -1,27 +1,26 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const login = (req, res) => {
-    const { email, password } = req.body;
-
+const login = (request, response) => {
+    const {email, password} = request.body;
     User.findUserByCredentials(email, password)
         .then((user) => {
-            const token = jwt.sign({ _id: user._id }, 'i-am-so-tired', {
+            const token = jwt.sign({_id: user._id}, 'i-am-so-tired', {
                 expiresIn: '7d'
             });
-            return { user, token };
+            return {user, token};
         })
-        .then(({ user, token }) => {
-            res.status(200).send({ _id: user._id, username: user.username, email: user.email, token });
+        .then(({user, token}) => {
+            response.status(200).send({_id: user._id, username: user.username, email: user.email, jwt: token});
         })
         .catch((error) => {
-            res.status(401).send({ message: error.message });
+            response.status(401).send({message: error.message});
         });
 };
 
