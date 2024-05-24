@@ -72,15 +72,17 @@ const checkIsUserExists = async (request, response, next) => {
     }
 };
 
-const conversionToHash = async  (require, response, next) => {
+
+const conversionToHash = async (require, response, next) => {
     try {
-        const salt = await bcrypt.getSalt(10);
-        request.body.password = await bcrypt.hash(request.body.password, salt);
+        const salt = await bcrypt.genSalt(10);
+        require.body.password = await bcrypt.hash(require.body.password, salt);
         next();
     } catch (error) {
-        response.status(500).send({message: "Password hashing execution error"})
+        response.status(400).send({ message: "Password hashing execution error" });
     }
-}
+};
+
 
 export {
     findAllUsers,
