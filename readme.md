@@ -1,3 +1,12 @@
+# For reviewer
+
+Ссылка на репозиторий с фронтендом: https://github.com/ArtyyCC/Pindie
+
+Ссылка на домен фронтенда:  https://notartya.nomoredomainswork.ru
+
+IP-адрес: 158.160.172.3
+
+
 # Backend for Pindie Admin Panel
 
 This repository contains the backend code for the admin panel of Pindie, a website for hosting indie games. The admin panel is used to manage game submissions, user accounts, category data, and other administrative tasks.
