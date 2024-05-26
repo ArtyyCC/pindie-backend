@@ -1,7 +1,7 @@
 import {ALLOWED_CORS} from "../config.js";
+import cors from 'cors';
 
-
-export const cors = (request, response, next) => {
+export const corsLegacy = (request, response, next) => {
     const {origin} = request.headers;
     if (ALLOWED_CORS.includes(origin)) {
         response.header('Access-Control-Allow-Origin', origin);
@@ -14,3 +14,11 @@ export const cors = (request, response, next) => {
 }
 
 
+
+
+export const corsOptions = {
+    "origin": ALLOWED_CORS,
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}

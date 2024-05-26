@@ -7,4 +7,5 @@ export const ALLOWED_CORS = [
     'https://students-projects.ru',
     `localhost:${PORT}`,
     'https://notartya.nomoredomainswork.ru',
+    'http://localhost:3000'
 ];
