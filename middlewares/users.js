@@ -47,7 +47,15 @@ const updateUser = async (request, response, next) => {
 
 const checkEmptyName = async (request, response, next) => {
     if (!request.body.name) {
-        response.status(400).send({message: "Enter the name of the category"});
+        response.status(400).send({message: "Enter the name of the name"});
+    } else {
+        next();
+    }
+};
+
+const checkEmptyPassword = async (request, response, next) => {
+    if (!request.body.password) {
+        response.status(400).send({message: "Enter the name of the password"});
     } else {
         next();
     }
@@ -93,5 +101,6 @@ export {
     checkEmptyName,
     checkEmptyNameAndEmail,
     checkIsUserExists,
-    conversionToHash
+    conversionToHash,
+    checkEmptyPassword
 }
